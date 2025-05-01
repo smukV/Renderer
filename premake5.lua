@@ -14,9 +14,16 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 VULKAN_SDK_PATH = os.getenv("VULKAN_SDK")
 
 IncludeDirs = {}
-IncludeDirs["GLFW"] = "Renderer/3rd-party/GLFW"
+IncludeDirs["GLFW"] = "3rd-party/GLFW"
 IncludeDirs["Vulkan"] = "%{VULKAN_SDK_PATH}"
+IncludeDirs["glm"] = "Renderer/3rd-party/glm"
+IncludeDirs["glad"] = "Renderer/3rd-party/glad"
+IncludeDirs["stb"] = "Renderer/3rd-party/stb"
 
+defines {
+    -- VRENDERER
+    "OGL_RENDERER"
+}
 
 project "Renderer"
     location "Renderer"
@@ -39,7 +46,9 @@ project "Renderer"
     includedirs
     {
         "%{IncludeDirs.GLFW}/include",
-        "%{IncludeDirs.Vulkan}/include"
+        "%{IncludeDirs.Vulkan}/include",
+        "%{IncludeDirs.glad}/include",
+        "%{IncludeDirs.stb}"
     }
 
     libdirs
@@ -105,8 +114,8 @@ project "Sandbox"
 
         links
         {
-            "glfw3"
-            -- "Renderer"
+            "glfw3",
+            "Renderer"
         }
 
         buildoptions {"/utf-8"}
